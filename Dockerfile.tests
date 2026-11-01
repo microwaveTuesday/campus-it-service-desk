@@ -1,0 +1,8 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0
+WORKDIR /src
+COPY backend/CampusIT.Api.csproj backend/
+COPY tests/CampusIT.Tests.csproj tests/
+RUN --mount=type=secret,id=build_ca if [ -f /run/secrets/build_ca ]; then cat /run/secrets/build_ca >> /etc/ssl/certs/ca-certificates.crt; fi; dotnet restore tests/CampusIT.Tests.csproj
+COPY backend/ backend/
+COPY tests/ tests/
+ENTRYPOINT ["dotnet", "test", "tests/CampusIT.Tests.csproj", "--no-restore", "--collect:XPlat Code Coverage", "--logger:trx;LogFileName=accounts.trx", "--results-directory", "/results"]

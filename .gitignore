@@ -1,0 +1,23 @@
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+**/coverage/
+**/TestResults/
+.env
+*.db
+uploads/
+*.user
+build-ca.pem
+
+# Local secrets, trust bundles, generated data and editor caches
+.env.*
+!.env.example
+*.pem
+*.pfx
+*.p12
+*.key
+*.log
+**/*.tsbuildinfo
+backups/
+work/

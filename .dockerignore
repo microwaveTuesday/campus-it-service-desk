@@ -1,0 +1,10 @@
+.git
+.env
+**/*.pem
+**/bin
+**/obj
+**/node_modules
+**/dist
+**/TestResults
+**/uploads
+docs/evidence

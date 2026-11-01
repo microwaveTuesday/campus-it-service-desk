@@ -1,0 +1,50 @@
+name: CI
+on:
+  push: {branches: [main]}
+  pull_request: {branches: [main]}
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: {POSTGRES_USER: campus_app, POSTGRES_PASSWORD: test_only_password, POSTGRES_DB: campus_it_test}
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U campus_app" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      ConnectionStrings__Default: Host=localhost;Port=5432;Database=campus_it_test;Username=campus_app;Password=test_only_password
+      Jwt__Key: CI_ONLY_LONG_RANDOM_TEST_SECRET_KEY_1234567
+      Jwt__Issuer: CampusIT
+      Jwt__Audience: CampusITUsers
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '9.0.x'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: python scripts/scan-secrets.py
+      - run: dotnet restore backend/CampusIT.Api.csproj
+      - run: dotnet build backend/CampusIT.Api.csproj --no-restore -c Release
+      - run: dotnet test tests/CampusIT.Tests.csproj -c Release --collect:"XPlat Code Coverage"
+      - run: npm ci
+        working-directory: frontend
+      - run: npm run build
+        working-directory: frontend
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: test-results, path: '**/TestResults/**'}
+
+  docker-smoke:
+    runs-on: ubuntu-latest
+    env:
+      POSTGRES_PASSWORD: ${{ github.run_id }}_disposable_test_only
+      JWT_KEY: ${{ github.run_id }}_disposable_jwt_key_at_least_32_bytes
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose up --build -d --wait --wait-timeout 180
+      - run: curl --fail --retry 20 --retry-all-errors --retry-delay 3 http://localhost:8080/health
+      - run: curl --fail http://localhost:3000/
+      - run: docker compose logs
+        if: failure()
+      - run: docker compose down -v
+        if: always()

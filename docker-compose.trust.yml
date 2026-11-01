@@ -1,0 +1,12 @@
+# Optional for environments with an organization-provided TLS inspection CA.
+# BUILD_CA_FILE points to a PEM bundle of trusted CA certificates, not a private key.
+services:
+  api:
+    build:
+      secrets: [build_ca]
+  frontend:
+    build:
+      secrets: [build_ca]
+secrets:
+  build_ca:
+    file: ${BUILD_CA_FILE:?Set BUILD_CA_FILE to your trusted PEM CA bundle}
