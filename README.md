@@ -1,6 +1,8 @@
 # Campus IT Service Desk
 
-Updated 1 November 2026. Read docs/VERIFICATION.md for measured results and remaining submission evidence. This package uses synthetic data only.
+[![CI](https://github.com/microwaveTuesday/campus-it-service-desk/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/microwaveTuesday/campus-it-service-desk/actions/workflows/ci.yml)
+
+Updated 23 November 2026. Read docs/VERIFICATION.md for measured results and remaining submission evidence. Demonstration evidence uses synthetic data only.
 
 ## Find your way around
 
@@ -61,7 +63,7 @@ npm --prefix frontend ci
 npm --prefix frontend run build
 ```
 
-Tests use real PostgreSQL and create synthetic accounts. Account-registration tests create and drop their own uniquely named databases, so the database user needs permission to CREATE DATABASE. Use a disposable database, never production. The CI build runs the full suite with coverage, builds the frontend using its lockfile, and has a separate Docker Compose smoke job. GitHub passing status and repository badge require an actual GitHub repository; none is configured in the supplied project.
+Tests use real PostgreSQL and create synthetic accounts. Account-registration tests create and drop their own uniquely named databases, so the database user needs permission to CREATE DATABASE. Use a disposable database, never production. The CI build runs the full suite with coverage, builds the frontend using its lockfile, and has a separate Docker Compose smoke job. The recorded baseline CI run passed both build-and-test and docker-smoke: https://github.com/microwaveTuesday/campus-it-service-desk/actions/runs/41273684255. Check the badge for the latest branch status.
 
 For local API development use `dotnet run --project backend`; frontend `npm --prefix frontend run dev`. The Vite development proxy targets http://localhost:8080/api; set VITE_API_URL for a different address. Database upgrades: `dotnet tool run dotnet-ef database update --project backend`. Migrations are committed; do not regenerate InitialCreate.
 
@@ -89,3 +91,11 @@ In Settings > Weather location, select Use my current location (with browser per
 Normal startup creates the required roles and applies migrations, but does not insert categories, service requests or Staff accounts. Admins add categories and create Staff accounts through the interface. Optional `--seed-demo` explicitly inserts synthetic categories/requests; do not run it when you want the lists to stay empty.
 
 GitHub stores the application source, migrations, instructions and synthetic verification evidence. It does not store live PostgreSQL records, Admin passwords, uploaded files, .env secrets, trusted CA bundles or generated build caches. Keep Docker volumes for your local Admin accounts. For a fresh clone, generate .env and register your own Admin accounts. A GitHub push backs up committed source; it does not automatically back up future uncommitted changes or live data.
+
+
+## Final submission materials
+The complete current report is [group ni arjei documentation](docs/group%20ni%20arjei_ProjectDocumentation.pdf). Team: group ni arjei; Eugene Ricafort, Arjei Lacayanga and John Lei Madrona. Instructor: Mark Boton. Review missing section/student numbers and genuine evidence before submission. Editable report, proposal draft, slides, demo script, manual test sheet and team forms are in [docs/submission](docs/submission/START_HERE.md).
+
+Repository: https://github.com/microwaveTuesday/campus-it-service-desk . Public application deployment URL: not yet provided. A GitHub repository URL and localhost are not the public hosted application.
+
+The original guidelines also require real proposal/midterm approval, four actual sprints, per-member meaningful commits and reviewed PRs, signed contributions, protected main, an actual v1.0 freeze release and a <=10-minute genuine backup recording. The kit does not establish these by generating templates. No public deployment or release was created while preparing the kit.

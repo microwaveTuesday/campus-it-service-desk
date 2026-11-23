@@ -1,3 +1,7 @@
+# Submission status update 23 November 2026
+
+Current report and checklist: docs/TeamName_ProjectDocumentation.pdf and docs/submission/START_HERE.md. The historical matrix below predates repository creation. CI was actually verified successful at run 41273684255 for source baseline ef58d95; main was unprotected and there were no PRs or releases at the preparation check. Repository is currently public. No public application URL or recording was found. Names, signatures and real team/process evidence remain needed.
+
 # Guideline evidence matrix (29 October 2026)
 
 | Requirement | Package evidence | Status |

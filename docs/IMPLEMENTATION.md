@@ -1,3 +1,5 @@
+> Current submission documentation is docs/TeamName_ProjectDocumentation.pdf (prepared 23 November 2026). This file preserves historical implementation notes; earlier statements about an absent GitHub repository/CI are superseded by the verified repository and run linked in README.
+
 # Implementation documentation
 
 ## Overview and measurable scope
