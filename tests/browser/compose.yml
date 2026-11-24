@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: campus_preview
+      POSTGRES_USER: preview_test
+      POSTGRES_PASSWORD: ${PREVIEW_TEST_DB_PASSWORD:?Set disposable test password}
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U preview_test -d campus_preview']
+      interval: 2s
+      retries: 30
+  api:
+    image: campusitcapstone-api
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Default: Host=db;Database=campus_preview;Username=preview_test;Password=${PREVIEW_TEST_DB_PASSWORD:?Set disposable test password}
+      Jwt__Key: ${PREVIEW_TEST_JWT_KEY:?Set disposable test JWT key}
+      Jwt__Issuer: CampusIT
+      Jwt__Audience: CampusITUsers
+      AllowedOrigins__0: http://localhost:4310
+    depends_on:
+      db: {condition: service_healthy}
+    ports: ['127.0.0.1:4810:8080']
+  frontend:
+    image: campusitcapstone-frontend
+    depends_on: [api]
+    ports: ['127.0.0.1:4310:80']

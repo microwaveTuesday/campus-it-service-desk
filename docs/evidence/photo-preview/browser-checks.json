@@ -1,0 +1,16 @@
+{
+  "passed": 10,
+  "checks": [
+    "Staff uploads PNG, uppercase JPG and PDF; photos load only on demand",
+    "Authenticated PNG preview decodes in the dialog with loading feedback",
+    "Hiding a preview releases its temporary object URL",
+    "Failed preview retains Download and retry displays the real JPEG",
+    "Portrait preview stays within the dialog on a 390px dark-mode screen",
+    "Unexpected content types are refused; retry restores a valid image",
+    "Closing the Files dialog releases active preview URLs",
+    "Image decode failure shows a recoverable error",
+    "PDF download still preserves the original bytes and filename",
+    "Anonymous attachment access remains unauthorized"
+  ],
+  "browserErrors": []
+}

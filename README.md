@@ -99,3 +99,7 @@ The complete current report is [group ni arjei documentation](docs/group%20ni%20
 Repository: https://github.com/microwaveTuesday/campus-it-service-desk . Public application deployment URL: not yet provided. A GitHub repository URL and localhost are not the public hosted application.
 
 The original guidelines also require real proposal/midterm approval, four actual sprints, per-member meaningful commits and reviewed PRs, signed contributions, protected main, an actual v1.0 freeze release and a <=10-minute genuine backup recording. The kit does not establish these by generating templates. No public deployment or release was created while preparing the kit.
+
+
+## Preview uploaded photos
+In Service requests > Files, choose **Preview photo** beside a PNG/JPG to view it inside the dialog. Use Hide preview to collapse it; Download remains available for images and PDFs. Existing uploads are supported. See [Photo preview and verification](docs/PHOTO_PREVIEW.md).

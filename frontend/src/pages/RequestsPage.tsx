@@ -1,6 +1,7 @@
 import {useCallback,useEffect,useState,FormEvent} from 'react';
 import {api,Category,Profile,Ticket,TicketInput,friendlyError} from '../api';
 import {Modal,Notice,EmptyState,StatusBadge,Icon} from '../components/UI';
+import AttachmentItem from '../components/AttachmentItem';
 const statuses=['Pending','In Progress','Resolved'];
 function TicketForm({ticket,categories,profile,onClose,onSaved}:{ticket:Ticket|null;categories:Category[];profile:Profile;onClose:()=>void;onSaved:()=>Promise<void>}){
  const [form,setForm]=useState<TicketInput>(ticket?{requesterName:ticket.requesterName,issue:ticket.issue,location:ticket.location,categoryId:ticket.categoryId,status:ticket.status}:{requesterName:profile.displayName,issue:'',location:'',categoryId:0,status:'Pending'});const [busy,setBusy]=useState(false);const [error,setError]=useState('');
@@ -20,7 +21,7 @@ function Attachments({ticket,onClose}:{ticket:Ticket;onClose:()=>void}){
  async function download(id:number,name:string){setError('');try{const r=await api.get(`/requests/${ticket.id}/attachments/${id}`,{responseType:'blob'});const url=URL.createObjectURL(r.data);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}catch(e){setError(friendlyError(e))}}
  return <Modal title={`Files for request #${ticket.id}`} description="Add a photo or document to help the support team." onClose={onClose} busy={busy}>{error&&<Notice error>{error}</Notice>}{notice&&<Notice>{notice}</Notice>}
  <form onSubmit={upload}><label>Choose a file<input type="file" accept=".png,.jpg,.pdf" required onChange={e=>setFile(e.target.files?.[0]??null)}/></label><p className="field-hint">PNG or JPG images and PDF documents. Maximum file size: 5 MB.</p><button disabled={busy||!file}>{busy?'Uploading…':'Upload file'}</button></form>
- <h3>Attached files</h3>{items.length===0?<p>No files have been added yet.</p>:<ul className="file-list">{items.map(f=><li key={f.id}><div><strong>{f.originalName}</strong><small>{Math.max(1,Math.round(f.size/1024))} KB</small></div><button className="secondary small" onClick={()=>void download(f.id,f.originalName)}>Download</button></li>)}</ul>}</Modal>
+ <h3>Attached files</h3>{items.length===0?<p>No files have been added yet.</p>:<ul className="file-list">{items.map(f=><AttachmentItem key={f.id} file={f} requestId={ticket.id} onDownload={()=>download(f.id,f.originalName)}/>)}</ul>}</Modal>
 }
 export default function RequestsPage({profile,startNew=false}:{profile:Profile;startNew?:boolean}){
  const [tickets,setTickets]=useState<Ticket[]>([]);const [categories,setCategories]=useState<Category[]>([]);const [loading,setLoading]=useState(true);const [error,setError]=useState('');const [notice,setNotice]=useState('');const [search,setSearch]=useState('');const [status,setStatus]=useState('All');const [form,setForm]=useState<Ticket|null|undefined>(startNew?null:undefined);const [files,setFiles]=useState<Ticket|null>(null);const [removing,setRemoving]=useState<Ticket|null>(null);const [busy,setBusy]=useState(false);

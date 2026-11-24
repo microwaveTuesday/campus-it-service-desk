@@ -1,0 +1,7 @@
+{
+  "name": "campus-it-browser-checks",
+  "private": true,
+  "type": "module",
+  "scripts": {"test": "node attachment-preview.mjs"},
+  "devDependencies": {"playwright": "1.62.1"}
+}
